@@ -1,0 +1,7 @@
+.vscode/
+
+*.log
+
+__pycache__/
+
+sensitive.json
