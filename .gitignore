@@ -4,4 +4,4 @@
 
 __pycache__/
 
-sensitive.json
+sensitive*
