@@ -6,7 +6,7 @@ import sys
 if len(sys.argv) > 1:
 
 	root_dir = sys.argv[1]
-	filebrowser_cmd = f'{filebrowser} -d {filebrowser_db} -a 127.0.0.1 -p 1234 --noauth -r {root_dir}'
+	filebrowser_cmd = f'{filebrowser} -d {filebrowser_db} -a 127.0.0.1 -p 54321 --noauth -r {root_dir}'
 
 	frp = 'D:/Downloads/frp/frpc.exe'
 	frp_config = 'D:/Downloads/frp/frpc.ini'
