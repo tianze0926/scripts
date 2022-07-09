@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  rsshub:
+    image: diygod/rsshub:chromium-bundled # with puppeteer enabled
+    restart: always
+    # ports:
+    #   - 127.0.0.1:1200:1200
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: redis://redis:6379/
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - redis-data:/data
+  
+  freshrss:
+    image: lscr.io/linuxserver/freshrss:latest
+    container_name: freshrss
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+    volumes:
+      - /mnt/4t/rss/freshrss:/config
+    ports:
+      - 127.0.0.1:9083:80
+    restart: unless-stopped
+    # extra_hosts:
+    #   - host.docker.internal:host-gateway
+
+
+volumes:
+    redis-data:
