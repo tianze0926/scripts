@@ -1,0 +1,35 @@
+mixed-port: 7890
+allow-lan: true
+mode: global
+ipv6: true
+
+external-controller: 0.0.0.0:8080
+external-ui: /ui
+secret: "{SECRET}"
+
+proxy-groups:
+  - name: 🔰 节点选择
+    type: select
+    use:
+      - wangzi
+    proxies:
+      - ♻️ 自动选择
+
+  - name: ♻️ 自动选择
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 60
+    use:
+      - wangzi
+
+proxy-providers:
+  wangzi:
+    type: http
+    url: "{SUBSCRIPTION}"
+    interval: 3600
+    path: ./wangzi.yaml
+    health-check:
+      enable: true
+      interval: 600
+      # lazy: true
+      url: http://www.gstatic.com/generate_204

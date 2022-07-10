@@ -1,0 +1,1 @@
+Use `./up.sh` instead of `docker compose up -d` to generate config.yaml with senstives.

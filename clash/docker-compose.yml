@@ -1,0 +1,21 @@
+version: '3'
+services:
+  clash:
+    # ghcr.io/dreamacro/clash
+    # ghcr.io/dreamacro/clash-premium
+    # dreamacro/clash
+    # dreamacro/clash-premium
+    image: dreamacro/clash-premium
+    container_name: clash
+    volumes:
+      - ./sensitive_config.yaml:/root/.config/clash/config.yaml
+      - ./ui:/ui # dashboard volume
+    ports:
+      - 127.0.0.1:7890:7890
+      - 127.0.0.1:17890:8080 # external controller (Restful API)
+    # # TUN
+    # cap_add:
+    #   - NET_ADMIN
+    # devices:
+    #   - /dev/net/tun
+    restart: unless-stopped
