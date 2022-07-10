@@ -4,36 +4,94 @@ services:
   rsshub:
     image: diygod/rsshub:chromium-bundled # with puppeteer enabled
     restart: always
-    # ports:
-    #   - 127.0.0.1:1200:1200
+    ports:
+      - 127.0.0.1:1212:80
     environment:
+      PORT: 80
       NODE_ENV: production
       CACHE_TYPE: redis
-      REDIS_URL: redis://redis:6379/
+      REDIS_URL: redis://rsshub.redis:6379/
     depends_on:
-      - redis
+      - rsshub.redis
+    networks:
+      - ttrss_public_access
 
-  redis:
+  rsshub.redis:
     image: redis:alpine
     restart: always
     volumes:
-      - redis-data:/data
+      - rsshub-redis-data:/data
   
-  freshrss:
-    image: lscr.io/linuxserver/freshrss:latest
-    container_name: freshrss
+  ttrss.rss:
+    image: wangqiru/ttrss:latest
+    ports:
+      - 127.0.0.1:18111:80
     environment:
+      SELF_URL_PATH: https://rss.tianze.xyz:1111/ # please change to your own domain
+      DB_HOST: ttrss.postgres
+      DB_PASS_FILE: /run/secrets/ttrss_db_pass # use the same password defined in `ttrss.postgres`
       PUID: 1000
       PGID: 1000
-      TZ: Asia/Shanghai
+    secrets:
+      - ttrss_db_pass
     volumes:
-      - /mnt/4t/rss/freshrss:/config
-    ports:
-      - 127.0.0.1:9083:80
-    restart: unless-stopped
-    # extra_hosts:
-    #   - host.docker.internal:host-gateway
+      - ttrss-feed-icons:/var/www/feed-icons/
+    networks:
+      - ttrss_public_access
+      - ttrss_service_only
+      - ttrss_database_only
+    stdin_open: true
+    tty: true
+    restart: always
 
+  ttrss.mercury: # set Mercury Parser API endpoint to `ttrss.mercury:3000` on TTRSS plugin setting page
+    image: wangqiru/mercury-parser-api:latest
+    networks:
+      - ttrss_public_access
+      - ttrss_service_only
+    restart: always
+
+  # ttrss.opencc: # set OpenCC API endpoint to `ttrss.opencc:3000` on TTRSS plugin setting page
+  #   image: wangqiru/opencc-api-server:latest
+  #   container_name: opencc
+  #   environment:
+  #     - NODE_ENV=production
+  #   networks:
+  #     - service_only
+  #   restart: always
+
+  ttrss.postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/ttrss_db_pass
+    secrets:
+      - ttrss_db_pass
+    volumes:
+      - /mnt/4t/rss/ttrss_postgres:/var/lib/postgresql/data # persist postgres data
+    networks:
+      - ttrss_database_only
+    restart: always
+
+  # utility.watchtower:
+  #   image: containrrr/watchtower:latest
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   environment:
+  #     WATCHTOWER_CLEANUP: true
+  #     WATCHTOWER_POLL_INTERVAL: 86400
+  #   restart: always
 
 volumes:
-    redis-data:
+    rsshub-redis-data:
+    ttrss-feed-icons:
+
+secrets:
+  ttrss_db_pass:
+    file: sensitive_ttrss_db_pass.txt
+
+networks:
+  ttrss_public_access: # Provide the access for ttrss UI
+  ttrss_service_only: # Provide the communication network between services only
+    internal: true
+  ttrss_database_only: # Provide the communication between ttrss and database only
+    internal: true
