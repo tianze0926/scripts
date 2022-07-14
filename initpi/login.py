@@ -57,9 +57,10 @@ datas = [
 ]
 
 def ddns():
-    mypi = ""
     try:
-        myip = requests.get('https://api-ipv4.ip.sb/ip').text[:-1]
+        myip = requests.get('https://api-ipv4.ip.sb/ip', headers={
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+        }).text[:-1]
     except:
         print('ip.sb error')
         return
