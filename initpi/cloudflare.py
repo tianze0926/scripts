@@ -38,12 +38,12 @@ def ddns(token: str, zone_id: str, records: List[Record]):
         except Exception as e:
             print(e)
 
-# if __name__ == '__main__':
-with open('sensitive_cloudflare.json') as f:
-    info = json.load(f)
+if __name__ == '__main__':
+    with open('sensitive_cloudflare.json') as f:
+        info = json.load(f)
 
-print('Input: ', info)
+    print('Input: ', info)
 
-while True:
-    ddns(**info)
-    time.sleep(30)
+    while True:
+        ddns(**info)
+        time.sleep(30)
