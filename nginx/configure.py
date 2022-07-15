@@ -95,6 +95,11 @@ SUBDOMAINS: Dict[str, Domain] = {
     'clash': {
         'port': 17890
     },
+    'docker': {
+        'custom': {
+            'proxy_pass': 'https://localhost:9443',
+        }
+    },
 }
 
 def config_format(c: Config):
