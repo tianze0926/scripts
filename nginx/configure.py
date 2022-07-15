@@ -1,4 +1,4 @@
-from typing import Dict, TypedDict
+from typing import Callable, Dict, TypedDict
 
 Config = Dict[str, str]
 
@@ -31,12 +31,12 @@ SSL_CERTS: Dict[str, Config] = {
 
 PORT = 1111
 
-domain_qbittorrent: Domain = {
-    'port': 8112,
+domain_qbittorrent: Callable[[int], Domain] = lambda port : {
+    'port': port,
     # https://github.com/qbittorrent/qBittorrent/wiki/NGINX-Reverse-Proxy-for-Web-UI
     'custom': {
         'proxy_http_version':   '1.1',
-        'proxy_set_header Host':             '127.0.0.1:8112',
+        'proxy_set_header Host':             f'127.0.0.1:{port}',
         'proxy_set_header X-Forwarded-Host': '$http_host',
         'proxy_set_header X-Forwarded-For':  '$remote_addr',
         'proxy_cookie_path':    '/           "/; Secure"',
@@ -54,8 +54,8 @@ SUBDOMAINS: Dict[str, Domain] = {
             'client_max_body_size': '50G'
         }
     },
-    'bt': domain_qbittorrent,
-    'bte': domain_qbittorrent,
+    'bt': domain_qbittorrent(8112),
+    'bte': domain_qbittorrent(8113),
     'sub': {
         'port': 9305,
         'custom': {
