@@ -1,1 +1,0 @@
-exec /usr/bin/aria2c --dir=/mnt/4t/download --log=aria.log --enable-rpc --rpc-listen-port=6800 --rpc-secret=$(/usr/bin/cat sensitive_aria.txt)

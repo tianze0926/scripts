@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  aria2pro:
+    image: p3terx/aria2-pro
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK_SET=022
+      - RPC_SECRET={SECRET}
+      - RPC_PORT=6800
+      - LISTEN_PORT=6888
+      - DISK_CACHE=64M
+      - IPV6_MODE=false
+      - UPDATE_TRACKERS=true
+      - CUSTOM_TRACKER_URL=
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./config:/config
+      - /mnt/4t/download:/downloads
+    ports:
+      - 127.0.0.1:6800:6800
+    #   - 6888:6888
+    #   - 6888:6888/udp
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 1m
+
+  AriaNg:
+    image: p3terx/ariang
+    # command: --port 6880 --ipv6
+    command: --port 6880
+    ports:
+      - 127.0.0.1:6880:6880
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 1m

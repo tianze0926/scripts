@@ -64,9 +64,7 @@ SUBDOMAINS: Dict[str, Domain] = {
         }
     },
     'aria': {
-        'custom': {
-            'root': '/home/ubuntu/ariaNg'
-        },
+        'port': 6880,
         'locations': {
             'jsonrpc': {
                 'port': 6800
