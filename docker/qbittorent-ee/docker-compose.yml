@@ -1,0 +1,16 @@
+version: "2"
+services:
+  qbittorrentee:
+    image: superng6/qbittorrentee
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./config:/config
+      - /mnt/4t/media:/downloads
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 127.0.0.1:8113:8080
+    restart: unless-stopped
