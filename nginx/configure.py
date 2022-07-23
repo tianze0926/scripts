@@ -98,6 +98,9 @@ SUBDOMAINS: Dict[str, Domain] = {
             'proxy_pass': 'https://localhost:9443',
         }
     },
+    'music': {
+        'port': 24533
+    },
 }
 
 def config_format(c: Config):
