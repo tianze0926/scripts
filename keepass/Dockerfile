@@ -8,4 +8,4 @@ COPY backup.py ./
 
 VOLUME /file
 
-CMD [ "python", "backup.py", "--auth_file", $AUTH_FILE ]
+CMD [ "python", "./backup.py", "--auth_file", $AUTH_FILE ]
