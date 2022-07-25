@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  keepass-backup:
+    image: tz039e/keepass-backup:latest
+    restart: always
+    environment:
+      AUTH_FILE: /run/secrets/auth
+    secrets:
+      - auth
+    user: 1000:1000
+    volumes:
+      - ./file:/file # make sure to create the directory at first
+
+secrets:
+  auth:
+    file: sensitive_auth.txt
