@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 ENV AUTH_FILE=
 
 COPY backup.py ./
-VOLUME /file
+RUN mkdir /file
 
 RUN pip install requests
-CMD python backup.py --auth_file $AUTH_FILE
+CMD python -t backup.py --auth_file $AUTH_FILE
