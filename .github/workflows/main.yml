@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "keepass/**"
+      - ".github/workflows/**"
 
 jobs:
 
@@ -11,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: docker/setup-qemu-action@v2 # for multi-architecture builds
       - id: buidlx
         uses: docker/setup-buildx-action@v1
       - name: Cache Docker layers
@@ -29,9 +31,10 @@ jobs:
         with:
           context: ./keepass
           file: ./keepass/Dockerfile
-          builder: ${{ steps.buildx.outputs.name }}
+          platform: linux/amd64, linux/arm64
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/keepass-backup:latest
+          builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
