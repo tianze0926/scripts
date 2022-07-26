@@ -57,7 +57,7 @@ SUBDOMAINS: Dict[str, Domain] = {
     'bt': domain_qbittorrent(8112),
     'bte': domain_qbittorrent(8113),
     'sub': {
-        'port': 9305,
+        'port': 24329,
         'custom': {
             'proxy_set_header X-Real-IP': '$remote_addr',
             'proxy_set_header X-Forwarded-For': '$proxy_add_x_forwarded_for',
