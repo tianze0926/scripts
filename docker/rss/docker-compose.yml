@@ -27,7 +27,7 @@ services:
     ports:
       - 127.0.0.1:18111:80
     environment:
-      SELF_URL_PATH: https://rss.tianze.xyz:1111/ # please change to your own domain
+      SELF_URL_PATH: https://rss.tianze.me:1111/ # please change to your own domain
       DB_HOST: ttrss.postgres
       DB_PASS_FILE: /run/secrets/ttrss_db_pass # use the same password defined in `ttrss.postgres`
       PUID: 1000
