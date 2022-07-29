@@ -101,6 +101,12 @@ SUBDOMAINS: Dict[str, Domain] = {
     'music': {
         'port': 24533
     },
+    'frp': {
+        'port': 37002
+    },
+    'frpDashboard': {
+        'port': 37001
+    },
 }
 
 def config_format(c: Config):

@@ -1,0 +1,4 @@
+- Configuration files are set to forward tcp
+- Server-side `remote_port`
+    - specified at `frpc.ini`
+    - should also be added to docker compose file

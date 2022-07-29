@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  frps:
+    image: snowdreamtech/frps
+    restart: always
+    ports:
+      # bind port
+      - 7000:7000
+      # dashboard port
+      - 127.0.0.1:37001:7001
+      # tcp remote ports
+      - 127.0.0.1:37002:7002
+    volumes:
+      - ./frps.ini:/etc/frp/frps.ini
