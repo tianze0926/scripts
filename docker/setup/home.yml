@@ -1,0 +1,15 @@
+version: '3'
+services:
+  cloudflare-ddns:
+    image: oznu/cloudflare-ddns
+    environment:
+      API_KEY_FILE: /run/secrets/api_key
+      ZONE: tianze.me
+      SUBDOMAIN: '*.home'
+    restart: always
+    secrets:
+      - api_key
+
+secrets:
+  api_key:
+    file: sensitive_api_key.txt
