@@ -1,4 +1,12 @@
-from typing import Callable, Dict, TypedDict
+"""
+Generates nginx http configuration file 
+for each subdomain and each ssl certificate.
+
+This also sets QoS priority for each service.
+"""
+
+from typing import Callable, Dict, List, TypedDict
+import tc
 
 Config = Dict[str, str]
 
@@ -9,6 +17,7 @@ class Location(TypedDict, total=False):
 class Domain(Location, total=False):
     # / as default location, not requiring explicit declaration
     locations: Dict[str, Location] # locations other than /
+    qos: tc.PrioInfo
 
 SSL_CONFIG: Config = {
     'ssl_protocols': 'TLSv1 TLSv1.1 TLSv1.2 TLSv1.3', # Dropping SSLv3, ref: POODLE
@@ -31,7 +40,7 @@ SSL_CERTS: Dict[str, Config] = {
 
 PORT = 1111
 
-domain_qbittorrent: Callable[[int], Domain] = lambda port : {
+domain_qbittorrent: Callable[[int, int], Domain] = lambda port, qos_port : {
     'port': port,
     # https://github.com/qbittorrent/qBittorrent/wiki/NGINX-Reverse-Proxy-for-Web-UI
     'custom': {
@@ -41,6 +50,10 @@ domain_qbittorrent: Callable[[int], Domain] = lambda port : {
         'proxy_set_header X-Forwarded-For':  '$remote_addr',
         'proxy_cookie_path':    '/           "/; Secure"',
         'client_max_body_size': '100M',
+    },
+    'qos': {
+        'port': qos_port,
+        'prio': tc.Prio.LOW
     }
 }
 
@@ -54,8 +67,8 @@ SUBDOMAINS: Dict[str, Domain] = {
             'client_max_body_size': '50G'
         }
     },
-    'bt': domain_qbittorrent(8112),
-    'bte': domain_qbittorrent(8113),
+    'bt': domain_qbittorrent(8112, 26191),
+    'bte': domain_qbittorrent(8113, 6881),
     'sub': {
         'port': 24329,
         'custom': {
@@ -125,13 +138,15 @@ def location_format(l: Location):
         items.extend(config_format(l['custom']))
     return items
 
-s = ''
+if __name__ == '__main__':
 
-NEWLINE = '\n'
-for domain, cert_config in SSL_CERTS.items():
-    ssl_config = {**SSL_CONFIG, **cert_config}
-    for subdomain, sub_config in SUBDOMAINS.items():
-        s += f'''server {{
+    s = ''
+
+    NEWLINE = '\n'
+    for domain, cert_config in SSL_CERTS.items():
+        ssl_config = {**SSL_CONFIG, **cert_config}
+        for subdomain, sub_config in SUBDOMAINS.items():
+            s += f'''server {{
     listen {PORT} ssl;
     server_name {subdomain}.{domain};
     error_page 497 301 =307 https://$host:$server_port$request_uri;
@@ -149,5 +164,11 @@ for domain, cert_config in SSL_CERTS.items():
 
 '''
 
-with open('subdomain.conf', 'w') as f:
-    f.write(s)
+    with open('subdomain.conf', 'w') as f:
+        f.write(s)
+
+    prio_infos: List[tc.PrioInfo] = []
+    for subdomain, sub_config in SUBDOMAINS.items():
+        if 'qos' in sub_config:
+            prio_infos.append(sub_config['qos'])
+    tc.qos(prio_infos)
