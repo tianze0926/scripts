@@ -123,6 +123,18 @@ SUBDOMAINS: Dict[str, Domain] = {
     'dash': {
         'port': 62487
     },
+    'bitwarden': {
+        'port': 62391,
+        'custom': {
+            'client_max_body_size': '128M',
+            'proxy_http_version': '1.1',
+            'proxy_set_header': '"Connection" ""',
+            'proxy_set_header': 'Host $host',
+            'proxy_set_header': 'X-Real-IP $remote_addr',
+            'proxy_set_header': 'X-Forwarded-For $proxy_add_x_forwarded_for',
+            'proxy_set_header': 'X-Forwarded-Proto $scheme',
+        }
+    },
 }
 
 def config_format(c: Config):

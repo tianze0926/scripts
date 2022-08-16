@@ -1,0 +1,51 @@
+version: '3.4'
+
+services:
+
+  vaultwarden:
+    image: vaultwarden/server:latest
+    restart: always
+    ports:
+      - 127.0.0.1:62391:80
+    volumes:
+      - vaultwarden-data:/data/
+
+  backup:
+    image: ttionya/vaultwarden-backup:latest
+    restart: always
+    environment:
+    #   RCLONE_REMOTE_NAME: 'BitwardenBackup'
+    #   RCLONE_REMOTE_DIR: '/BitwardenBackup/'
+    #   RCLONE_GLOBAL_FLAG: ''
+      CRON: '0 4 * * *'
+    #   ZIP_ENABLE: 'TRUE'
+    #   ZIP_PASSWORD: 'WHEREISMYPASSWORD?'
+    #   ZIP_TYPE: 'zip'
+    #   BACKUP_FILE_DATE_SUFFIX: ''
+      BACKUP_KEEP_DAYS: 10
+    #   PING_URL: ''
+    #   MAIL_SMTP_ENABLE: 'FALSE'
+    #   MAIL_SMTP_VARIABLES: ''
+    #   MAIL_TO: ''
+    #   MAIL_WHEN_SUCCESS: 'TRUE'
+    #   MAIL_WHEN_FAILURE: 'TRUE'
+      TIMEZONE: 'CST'
+    volumes:
+      - vaultwarden-data:/bitwarden/data/
+      - vaultwarden-rclone-data:/config/
+    #   - /path/to/env:/.env
+
+volumes:
+  vaultwarden-data:
+    # Specify the name of the volume where you save the vaultwarden data,
+    # use vaultwarden-data for new users
+    # and bitwardenrs-data for migrated users
+    name: vaultwarden-data
+    # name: bitwardenrs-data
+  vaultwarden-rclone-data:
+    external: true
+    # Specify the name of the volume where you save the rclone configuration,
+    # use vaultwarden-rclone-data for new users
+    # and bitwardenrs-rclone-data for migrated users
+    name: vaultwarden-rclone-data
+    # name: bitwardenrs-rclone-data
