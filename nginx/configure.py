@@ -179,7 +179,16 @@ if __name__ == '__main__':
     with open('subdomain.conf', 'w') as f:
         f.write(s)
 
-    prio_infos: List[tc.PrioInfo] = []
+    prio_infos: List[tc.PrioInfo] = [
+        {
+            'port': 1111,
+            'prio': tc.Prio.HIGH
+        },
+        {
+            'port': 2345,
+            'prio': tc.Prio.HIGH
+        },
+    ]
     for subdomain, sub_config in SUBDOMAINS.items():
         if 'qos' in sub_config:
             prio_infos.append(sub_config['qos'])

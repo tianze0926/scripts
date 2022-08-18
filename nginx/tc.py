@@ -42,6 +42,6 @@ def qos(port_infos: List[PrioInfo]):
         MATCH = f'u32 match ip dport {port_info["port"]} 0xffff'
         FLOW = 'flowid 1:1'
         # is flowid necessary???
-        # run(f'tc filter add {DEVICE} {PROTOCOL} {PARENT} {PRIO} {MATCH} {FLOW}')
-        run(f'tc filter add {DEVICE} {PROTOCOL} {PARENT} {PRIO} {MATCH}')
+        run(f'tc filter add {DEVICE} {PROTOCOL} {PARENT} {PRIO} {MATCH} {FLOW}')
+        # run(f'tc filter add {DEVICE} {PROTOCOL} {PARENT} {PRIO} {MATCH}')
 
