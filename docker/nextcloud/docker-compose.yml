@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  app:
+    image: linuxserver/nextcloud
+    environment:
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - config:/config
+      - ./data:/data
+      - /mnt/4t:/mnt/4t
+    ports:
+      - 127.0.0.1:62789:443
+    restart: always
+
+volumes:
+  config:

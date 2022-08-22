@@ -135,6 +135,13 @@ SUBDOMAINS: Dict[str, Domain] = {
             'proxy_set_header': 'X-Forwarded-Proto $scheme',
         }
     },
+    'cloud': {
+        'custom': {
+            'proxy_pass': 'https://localhost:62789',
+            'client_max_body_size': '50G',
+            'proxy_set_header': 'X-Forwarded-For $proxy_add_x_forwarded_for',
+        }
+    },
 }
 
 def config_format(c: Config):
