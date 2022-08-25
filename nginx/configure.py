@@ -135,6 +135,9 @@ SUBDOMAINS: Dict[str, Domain] = {
             'proxy_set_header': 'X-Forwarded-Proto $scheme',
         }
     },
+    'sync': {
+        'port': 62488
+    },
 }
 
 def config_format(c: Config):
