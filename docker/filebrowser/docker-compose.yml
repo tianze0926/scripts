@@ -11,3 +11,15 @@ services:
     ports:
       - 127.0.0.1:49149:80
     restart: unless-stopped
+  
+  swap:
+    image: filebrowser/filebrowser
+    volumes:
+      - /mnt/4t/swap:/srv
+      # If you don't already have a database file, make sure to create a new empty file under the path you specified.
+      # Otherwise, Docker will create an empty folder instead of an empty file, resulting in an error when mounting the database into the container.
+      - ./config/filebrowser-swap.db:/database.db
+    user: 1000:1000
+    ports:
+      - 127.0.0.1:49150:80
+    restart: unless-stopped

@@ -67,6 +67,12 @@ SUBDOMAINS: Dict[str, Domain] = {
             'client_max_body_size': '50G'
         }
     },
+    'swap': {
+        'port': 49150,
+        'custom': {
+            'client_max_body_size': '50G'
+        }
+    },
     'bt': domain_qbittorrent(8112, 26191),
     'bte': domain_qbittorrent(8113, 6881),
     'sub': {
