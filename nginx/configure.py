@@ -144,6 +144,17 @@ SUBDOMAINS: Dict[str, Domain] = {
     'sync': {
         'port': 62488
     },
+    'webdav': {
+        'port': 62489,
+        'custom': {
+            'client_max_body_size': '0',
+            'proxy_set_header X-Real-IP': '$remote_addr',
+            'proxy_set_header REMOTE-HOST': '$remote_addr',
+            'proxy_set_header X-Forwarded-For': '$proxy_add_x_forwarded_for',
+            'proxy_set_header Host': '$http_host',
+            'proxy_redirect': 'off',
+        }
+    },
 }
 
 def config_format(c: Config):

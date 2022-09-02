@@ -1,0 +1,6 @@
+port: 80
+
+users:
+  - username: $USERNAME
+    password: $PASSWORD
+    scope: /path
