@@ -9,6 +9,17 @@ services:
     restart: always
     secrets:
       - api_key
+  cloudflare-ddns-v6:
+    image: oznu/cloudflare-ddns
+    environment:
+      API_KEY_FILE: /run/secrets/api_key
+      ZONE: tianze.me
+      SUBDOMAIN: '*'
+      RRTYPE: AAAA
+    network_mode: host
+    restart: always
+    secrets:
+      - api_key
 
 secrets:
   api_key:
