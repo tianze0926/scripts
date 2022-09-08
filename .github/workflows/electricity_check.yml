@@ -3,8 +3,8 @@ name: CI to Docker Hub
 on:
   push:
     paths:
-      - "keepass/**"
-      - ".github/workflows/**"
+      - ".github/workflows/electricity_check.yml"
+      - "electricity_check/**"
 
 jobs:
 
@@ -29,11 +29,11 @@ jobs:
       - id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: ./keepass
-          file: ./keepass/Dockerfile
+          context: ./electricity_check
+          file: ./electricity_check/Dockerfile
           platforms: linux/amd64, linux/arm64
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/keepass-backup:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/electricity-check:latest
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
