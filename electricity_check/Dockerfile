@@ -24,4 +24,5 @@ ENV SMTP_PORT=
 ENV CHECK_PERIOD=
 ENV RETRY_PERIOD=
 
+RUN ln -s /lib/ld-musl-aarch64.so.1 /lib/ld-linux-aarch64.so.1
 CMD /usr/local/bin/electricity_check
