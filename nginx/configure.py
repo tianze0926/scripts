@@ -58,9 +58,6 @@ domain_qbittorrent: Callable[[int, int], Domain] = lambda port, qos_port : {
 }
 
 SUBDOMAINS: Dict[str, Domain] = {
-    'status': {
-        'port': 61208,
-    },
     'file': {
         'port': 49149,
         'custom': {

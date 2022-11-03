@@ -1,0 +1,31 @@
+version: '3'
+services:
+  swag:
+    image: linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      URL: tianze.me
+      VALIDATION: dns
+      SUBDOMAINS: wildcard
+      # CERTPROVIDER:
+      DNSPLUGIN: cloudflare
+      # PROPAGATION:
+      # EMAIL:
+      # ONLY_SUBDOMAINS: false
+      # EXTRA_DOMAINS:
+      # STAGING: false
+    volumes:
+      - ./config:/config
+    ports:
+      - 1234:1234
+    restart: always
+
+networks:
+  default:
+    name: apps
+    external: true
