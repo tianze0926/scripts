@@ -114,9 +114,6 @@ SUBDOMAINS: Dict[str, Domain] = {
             'proxy_pass': 'https://localhost:9443',
         }
     },
-    'music': {
-        'port': 24533
-    },
     'frp': {
         'port': 37002
     },
