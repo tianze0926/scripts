@@ -7,6 +7,7 @@ config/nginx/*
 !config/nginx/authelia-server.conf
 !config/nginx/ssl.conf
 !config/nginx/proxy.conf
+!config/nginx/nginx.conf
 
 config/nginx/site-confs/*
 !config/nginx/site-confs/default.conf
