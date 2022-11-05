@@ -23,6 +23,15 @@ services:
       - ./config:/config
     user: 1000:1000
 
+  redis:
+    image: redis
+    restart: unless-stopped
+    volumes:
+      - authelia-redis:/data
+
+volumes:
+  authelia-redis:
+
 networks:
   default:
     name: apps

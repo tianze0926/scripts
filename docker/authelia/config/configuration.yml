@@ -703,9 +703,9 @@ session:
   ##
   ## Important: Kubernetes (or HA) users must read https://www.authelia.com/t/statelessness
   ##
-  # redis:
-    # host: 127.0.0.1
-    # port: 6379
+  redis:
+    host: redis
+    port: 6379
     ## Use a unix socket instead
     # host: /var/run/redis/redis.sock
 
