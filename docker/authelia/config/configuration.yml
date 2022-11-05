@@ -579,6 +579,13 @@ access_control:
     #   networks: 10.9.0.0/16
 
   rules:
+    - domain_regex:
+        - '^bitwarden\..*$'
+        - '^swap\..*$'
+        - '^sub\..*$'
+        - '^frp\..*$'
+        - '^webdav\..*$'
+      policy: bypass
     ## Rules applied to everyone
     # - domain: 'public.example.com'
     #   policy: bypass

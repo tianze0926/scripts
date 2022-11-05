@@ -24,8 +24,9 @@ services:
   
   ttrss.rss:
     image: wangqiru/ttrss:latest
-    ports:
-      - 127.0.0.1:18111:80
+    container_name: rss
+    # ports:
+    #   - 127.0.0.1:18111:80
     environment:
       SELF_URL_PATH: https://rss.tianze.me:1111/ # please change to your own domain
       DB_HOST: ttrss.postgres
@@ -37,6 +38,7 @@ services:
     volumes:
       - ttrss-feed-icons:/var/www/feed-icons/
     networks:
+      - apps
       - ttrss_public_access
       - ttrss_service_only
       - ttrss_database_only
@@ -90,6 +92,9 @@ secrets:
     file: sensitive_ttrss_db_pass.txt
 
 networks:
+  apps:
+    name: apps
+    external: true
   ttrss_public_access: # Provide the access for ttrss UI
   ttrss_service_only: # Provide the communication network between services only
     internal: true

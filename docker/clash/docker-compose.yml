@@ -12,10 +12,15 @@ services:
       - ./ui:/ui # dashboard volume
     ports:
       - 127.0.0.1:7890:7890
-      - 127.0.0.1:17890:8080 # external controller (Restful API)
+      # - 127.0.0.1:17890:8080 # external controller (Restful API)
     # # TUN
     # cap_add:
     #   - NET_ADMIN
     # devices:
     #   - /dev/net/tun
     restart: unless-stopped
+
+networks:
+  default:
+    name: apps
+    external: true

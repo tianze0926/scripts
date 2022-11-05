@@ -1,7 +1,9 @@
-version: "2"
+version: '3'
+
 services:
-  qbittorrentee:
+  app:
     image: superng6/qbittorrentee
+    container_name: qbittorrentee
     environment:
       - PUID=1000
       - PGID=1000
@@ -12,5 +14,10 @@ services:
     ports:
       - 6881:6881
       - 6881:6881/udp
-      - 127.0.0.1:8113:8080
+      # - 127.0.0.1:8113:8080
     restart: unless-stopped
+
+networks:
+  default:
+    name: apps
+    external: true

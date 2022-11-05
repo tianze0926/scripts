@@ -4,11 +4,12 @@ services:
 
   vaultwarden:
     image: vaultwarden/server:latest
+    container_name: bitwarden
     restart: always
     environment:
       ADMIN_TOKEN: ${ADMIN_TOKEN}
-    ports:
-      - 127.0.0.1:62391:80
+    # ports:
+    #   - 127.0.0.1:62391:80
     volumes:
       - vaultwarden-data:/data/
 
@@ -51,3 +52,8 @@ volumes:
     # and bitwardenrs-rclone-data for migrated users
     name: vaultwarden-rclone-data
     # name: bitwardenrs-rclone-data
+
+networks:
+  default:
+    name: apps
+    external: true

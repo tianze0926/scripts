@@ -22,7 +22,7 @@ services:
     volumes:
       - ./config:/config
     ports:
-      - 1234:1234
+      - 1111:1111
     restart: always
 
 networks:

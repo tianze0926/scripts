@@ -2,10 +2,16 @@ version: '3'
 services:
   app:
     image: hacdias/webdav:arm64-latest
+    container_name: webdav
     volumes:
       - ./config.yml:/etc/webdav/config.yml
       - /mnt/4t/:/4t/
     user: 1000:1000
-    ports:
-      - 127.0.0.1:62489:80
+    # ports:
+    #   - 127.0.0.1:62489:80
     restart: unless-stopped
+
+networks:
+  default:
+    name: apps
+    external: true
