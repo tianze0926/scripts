@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  app:
+    image: linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      - WEBUI_PORT=8080
+    volumes:
+      - ./config:/config
+      - /mnt/4t:/mnt/4t
+    ports:
+      # - 127.0.0.1:4567:8080
+      - 26191:26191
+      - 26191:26191/udp
+    restart: unless-stopped
+
+  ee:
+    image: superng6/qbittorrentee
+    container_name: qbittorrentee
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./config-ee:/config
+      - /mnt/4t/media:/downloads
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      # - 127.0.0.1:8113:8080
+    restart: unless-stopped
+  
+
+networks:
+  default:
+    name: apps
+    external: true
