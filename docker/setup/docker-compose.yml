@@ -16,7 +16,6 @@ services:
       ZONE: tianze.me
       SUBDOMAIN: '*'
       RRTYPE: AAAA
-    network_mode: host
     restart: always
     secrets:
       - api_key
@@ -24,3 +23,8 @@ services:
 secrets:
   api_key:
     file: sensitive_api_key.txt
+
+networks:
+  default:
+    name: apps
+    external: true
