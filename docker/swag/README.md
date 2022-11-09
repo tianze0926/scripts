@@ -21,3 +21,17 @@ server {
 ```
 
 so that the upstream domain will be evaluated at run time instead of startup time.
+
+## Access host service
+
+> `host.docker.internal` is not supported since its DNS resolving is achieved using `/etc/hosts` instead of Docker's DNS server, and Nginx is not looking up `/etc/hosts` for `proxy_pass` directive.
+
+- Configure `ufw` to allow traffic from docker
+
+    ```
+    ufw allow from 192.168.32.0/20 comment 'docker'
+    ```
+
+    The subnet is of the bridge network to which SWAG's container links.
+
+- Nginx `proxy_pass`: should be `docker0`'s IP
