@@ -109,7 +109,7 @@ server:
 ##
 log:
   ## Level of verbosity for logs: info, debug, trace.
-  level: debug
+  level: info
 
   ## Format the logs are written as: json, text.
   # format: json
@@ -568,7 +568,7 @@ password_policy:
 access_control:
   ## Default policy can either be 'bypass', 'one_factor', 'two_factor' or 'deny'. It is the policy applied to any
   ## resource if there is no policy to be applied to the user.
-  default_policy: two_factor
+  default_policy: deny
 
   # networks:
     # - name: internal
@@ -579,13 +579,29 @@ access_control:
     #   networks: 10.9.0.0/16
 
   rules:
-    - domain_regex:
-        - '^bitwarden\..*$'
-        - '^swap\..*$'
-        - '^sub\..*$'
-        - '^frp\..*$'
-        - '^webdav\..*$'
+    - domain:
+        - bitwarden.tianze.me
+        - swap.tianze.me
+        - sub.tianze.me
+        - frp.tianze.me
+        - webdav.tianze.me
       policy: bypass
+    
+    - domain:
+        - status.tianze.me
+        - media.tianze.me
+        - bt.tianze.me
+        - bte.tianze.me
+        - file.tianze.me
+        - aria.tianze.me
+        - frpd.tianze.me
+        - sync.tianze.me
+        - clash.tianze.me
+        - rss.tianze.me
+        - code.tianze.me
+      subject: 'user:leo'
+      policy: two_factor
+    
     ## Rules applied to everyone
     # - domain: 'public.example.com'
     #   policy: bypass
