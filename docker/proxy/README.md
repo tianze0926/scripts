@@ -5,10 +5,34 @@ Use `./up.sh` instead of `docker compose up -d` to generate config.yaml with sen
 > ⚠️ UNDER CONSTRUCTION
 > - UDP forward
 > - DNS
+> - Persistence of iptables and ip rule, ip route
 
 ### WiFi Hotspot Sharing Proxy
 
-#### Setup Hotspot
+#### How It Works
+
+The iptables flow of packets (the complete traversal can be found [here](https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html#TRAVERSINGOFTABLES)):
+
+> `raw`, `nat` table and `POSTROUTING` chains are omitted.
+
+```mermaid
+flowchart LR
+    0{{wlan0}} --> mpr(mangle\nPREROUTING)
+
+    mpr --> mf
+    subgraph without proxy
+    mf(mangle\nFORWARD) --> ff(filter\nFORWARD) --> 1{{eth0}}
+    end
+    1 --> net[Internet]
+
+    mpr -- tproxy --> mi
+    subgraph with proxy
+    mi(mangle\nINPUT) --> fi(filter\nINPUT) -- routing --> p([proxy at lo])
+    end
+    p --> net
+```
+
+#### Hotspot
 
 ```shell
 nmcli con add type wifi ifname wlan0 con-name MyHotspot autoconnect yes ssid $YOUR_SSID
@@ -20,7 +44,7 @@ nmcli con modify MyHotspot wifi-sec.psk $YOUR_PASSWORD
 nmcli con up MyHotspot
 ```
 
-#### Setup Proxy
+#### Proxy
 
 Use https://github.com/zfl9/ipt2socks to convert network layer traffic to socks5, which listens on 127.0.0.1:60080 by default.
 
@@ -50,9 +74,17 @@ ip route add local 0.0.0.0/0 dev lo table 626
 UFW's iptables chain `ufw-not-local` at table `filter` would interfere with `tproxy`-ed packets since `tproxy` does not modify the dst address of packets and `ufw-not-local` would drop any packets not towards local, unicast or broadcast before the traversal into the user-defined chain `ufw-user-input`.
 Fix (https://github.com/zfl9/ss-tproxy/issues/199):
 
-Modify `/etc/ufw/before.rules`, append the following under `-A ufw-before-input -j ufw-not-local`:
+- Modify `/etc/ufw/before.rules`, append the following under `-A ufw-before-input -j ufw-not-local`:
 
-```
-# if TPROXY, RETURN
--A ufw-not-local -m mark --mark 626 -j RETURN
-```
+    ```
+    # if TPROXY, RETURN
+    -A ufw-not-local -m mark --mark 626 -j RETURN
+    ```
+
+- Add explicit allow from `wlan0` if UFW is in whitelist mode:
+
+    ```shell
+    ufw allow from 10.42.0.0/24 comment 'wlan0'
+    ```
+
+> Some packets could still be blocked, but the iptables tracing (`TRACE` target, very useful for debugging) suggests that it is due to `ctstate INVALID` in chain `ufw-before-input`. So it might have no undesirable effects (?).
