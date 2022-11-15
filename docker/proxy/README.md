@@ -28,7 +28,7 @@ Use https://github.com/zfl9/ipt2socks to convert network layer traffic to socks5
 
 ```shell
 iptables -t mangle -N NAIVE
-iptables -t mangle -R NAIVE 1 ! -d 10.42.0.0/24 -p tcp -j TPROXY --on-ip 127.0.0.1 --on-port 60080 --tproxy-mark 626
+iptables -t mangle -A NAIVE ! -d 10.42.0.0/24 -p tcp -j TPROXY --on-ip 127.0.0.1 --on-port 60080 --tproxy-mark 626
 iptables -t mangle -A PREROUTING -i wlan0 -j NAIVE
 ```
 
