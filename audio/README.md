@@ -35,4 +35,4 @@ However this only has amd64 builds. Thus for arm64 we need to build manually:
 - `make`
 - `sudo make install`
 - `sudo ln -s /usr/local/lib/libMAC.so.8 /usr/lib/libMAC.so.8`
-    - The program seems to be unable find the lib unless at `/usr/lib/`.
+    - The program seems to be unable to find the lib unless at `/usr/lib/`.
