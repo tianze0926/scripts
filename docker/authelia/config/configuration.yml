@@ -585,11 +585,11 @@ access_control:
         - sub.tianze.me
         - frp.tianze.me
         - webdav.tianze.me
+        - media.tianze.me
       policy: bypass
     
     - domain:
         - status.tianze.me
-        - media.tianze.me
         - bt.tianze.me
         - bte.tianze.me
         - file.tianze.me
