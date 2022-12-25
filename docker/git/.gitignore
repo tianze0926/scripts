@@ -1,0 +1,5 @@
+data/*
+!data/gitea/
+
+data/gitea/*
+!data/gitea/conf/

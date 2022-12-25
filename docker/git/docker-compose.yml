@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  server:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    volumes:
+      - ./data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      # - 3000:3000
+      - '2345:22'
+
+networks:
+  default:
+    name: apps
+    external: true
