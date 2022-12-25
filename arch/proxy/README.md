@@ -1,0 +1,1 @@
+Simple setup with routing.

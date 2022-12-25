@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  xray:
+    image: teddysun/xray
+    restart: unless-stopped
+    volumes:
+      - ./xray.json:/etc/xray/config.json
+    ports:
+      - 127.0.0.1:2081:2081
+  naive:
+    image: pocat/naiveproxy:client
+    restart: unless-stopped
+    volumes:
+      - ./naive.json:/etc/naiveproxy/config.json
