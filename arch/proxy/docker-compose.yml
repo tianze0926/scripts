@@ -8,6 +8,7 @@ services:
       - ./xray.json:/etc/xray/config.json
     ports:
       - 127.0.0.1:2081:2081
+      - 127.0.0.1:2080:2080
   naive:
     image: pocat/naiveproxy:client
     restart: unless-stopped

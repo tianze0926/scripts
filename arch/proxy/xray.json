@@ -4,6 +4,11 @@
       "listen": "0.0.0.0",
       "port": 2081,
       "protocol": "http"
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 2080,
+      "protocol": "socks"
     }
   ],
   "outbounds": [
@@ -31,11 +36,11 @@
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [
-      {
-        "type": "field",
-        "domain": ["geosite:category-ads-all"],
-        "outboundTag": "block"
-      },
+      // {
+      //   "type": "field",
+      //   "domain": ["geosite:category-ads-all"],
+      //   "outboundTag": "block"
+      // },
       {
         "type": "field",
         "domain": [
@@ -56,6 +61,11 @@
         "type": "field",
         "ip": ["geoip:private", "geoip:cn"],
         "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "ip": ["geoip:!cn"],
+        "outboundTag": "proxy"
       }
     ]
   }
