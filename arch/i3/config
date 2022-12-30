@@ -169,8 +169,29 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# clipboard manager
 exec --no-startup-id copyq
+for_window [class="copyq"] floating enable
+
+# bluetooth manager
 exec --no-startup-id blueman-applet
+for_window [class="Blueman-manager"] floating enable
+
+# volume control
+for_window [class="Pavucontrol"] floating enable
+
+# screenshot
+exec --no-startup-id ksnip
+for_window [class="ksnip"] floating enable
+
+# emails
 exec --no-startup-id birdtray
+
+# seadrive
+exec --no-startup-id seadrive-gui
+
+# wemeet
+for_window [class="wemeet"] floating enable
 
 default_border pixel
