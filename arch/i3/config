@@ -168,6 +168,9 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # clipboard manager
@@ -182,8 +185,7 @@ for_window [class="Blueman-manager"] floating enable
 for_window [class="Pavucontrol"] floating enable
 
 # screenshot
-exec --no-startup-id ksnip
-for_window [class="ksnip"] floating enable
+bindsym Print exec --no-startup-id maim -s | copyq write image/png -
 
 # emails
 exec --no-startup-id birdtray
@@ -193,5 +195,11 @@ exec --no-startup-id seadrive-gui
 
 # wemeet
 for_window [class="wemeet"] floating enable
+
+# bitwarden chrome extension
+for_window [instance="crx_nngceckbapebfimnlniiiahkandclblb"] floating enable
+
+# fcitx5 config
+for_window [class="fcitx5-config-qt"] floating enable
 
 default_border pixel
