@@ -570,11 +570,12 @@ access_control:
   ## resource if there is no policy to be applied to the user.
   default_policy: deny
 
-  # networks:
-    # - name: internal
-    #   networks:
-        # - 10.10.0.0/16
-        # - 192.168.2.0/24
+  networks:
+    - name: internal
+      networks:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16
     # - name: VPN
     #   networks: 10.9.0.0/16
 
@@ -590,6 +591,12 @@ access_control:
         - grocy.tianze.me
       policy: bypass
     
+    - domain:
+        - bt.tianze.me
+      networks:
+        - internal
+      policy: bypass
+
     - domain:
         - status.tianze.me
         - bt.tianze.me
