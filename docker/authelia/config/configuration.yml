@@ -587,6 +587,7 @@ access_control:
         - webdav.tianze.me
         - media.tianze.me
         - git.tianze.me
+        - grocy.tianze.me
       policy: bypass
     
     - domain:

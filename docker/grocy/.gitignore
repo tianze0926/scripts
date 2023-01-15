@@ -1,0 +1,4 @@
+config/*
+!config/data/
+config/data/*
+!config/data/config.php
