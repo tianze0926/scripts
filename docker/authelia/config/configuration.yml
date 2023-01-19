@@ -589,6 +589,7 @@ access_control:
         - media.tianze.me
         - git.tianze.me
         - grocy.tianze.me
+        - cloud.tianze.me
       policy: bypass
     
     - domain:
@@ -1402,16 +1403,16 @@ identity_providers:
       # allowed_origins_from_client_redirect_uris: false
 
     ## Clients is a list of known clients and their configuration.
-    clients:
-      -
+    # clients:
+      # -
         ## The ID is the OpenID Connect ClientID which is used to link an application to a configuration.
-        id: gitea
+        # id: gitea
 
         ## The description to show to users when they end up on the consent screen. Defaults to the ID above.
         # description: My Application
 
         ## The client secret is a shared secret between Authelia and the consumer of this client.
-        secret: gitea
+        # secret: gitea
 
         ## Sector Identifiers are occasionally used to generate pairwise subject identifiers. In most cases this is not
         ## necessary. Read the documentation for more information.
@@ -1442,8 +1443,8 @@ identity_providers:
           # - profile
 
         ## Redirect URI's specifies a list of valid case-sensitive callbacks for this client.
-        redirect_uris:
-          - https://git.tianze.me:1111/user/oauth2/authelia/callback
+        # redirect_uris:
+        #   - https://git.tianze.me:1111/user/oauth2/authelia/callback
 
         ## Grant Types configures which grants this client can obtain.
         ## It's not recommended to define this unless you know what you're doing.
@@ -1464,4 +1465,14 @@ identity_providers:
 
         ## The algorithm used to sign userinfo endpoint responses for this client, either none or RS256.
         # userinfo_signing_algorithm: none
+    clients:
+      - id: gitea
+        secret: gitea
+        redirect_uris:
+          - https://git.tianze.me:1111/user/oauth2/authelia/callback
+      
+      - id: nextcloud
+        secret: $pbkdf2-sha512$310000$E0XdDY4t2qPoDhIQ.SMz0g$4FrRSuurJwRoSlFB.2hHU8UP4DkWMinIWJWfvVdu1/6iNqjxeVvtsZy7nfvN4y4ia1.PNzByYrs53zwkvZUK/Q
+        redirect_uris:
+          - https://cloud.tianze.me:1111/apps/oidc_login/oidc
 ...
