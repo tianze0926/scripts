@@ -9,12 +9,33 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - ./config:/config
-      - /mnt/4t/cloud:/data
+      - data:/data
+      - /mnt/4t:/mnt/4t
     # ports:
     #   - 443:443
     restart: unless-stopped
+    networks:
+      - default
+      - db
+  
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: nextcloud
+      POSTGRES_DB: nextcloud
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - db
+
+volumes:
+  data:
+  db:
 
 networks:
   default:
     name: apps
     external: true
+  db:
