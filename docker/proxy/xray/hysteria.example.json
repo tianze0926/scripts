@@ -1,0 +1,10 @@
+{
+    "server": "hostname:port",
+    "obfs": "obfs",
+    "up_mbps": 50,
+    "down_mbps": 100,
+    "socks5": {
+      "listen": "0.0.0.0:1080"
+    }
+  }
+  

@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  xray:
+    image: teddysun/xray
+    restart: unless-stopped
+    volumes:
+      - ./xray.json:/etc/xray/config.json
+    ports:
+      - 2081:2081
+      - 2080:2080
+  upstream:
+    image: pocat/naiveproxy:client
+    restart: unless-stopped
+    volumes:
+      - ./naive.json:/etc/naiveproxy/config.json
+  # upstream:
+  #   image: tobyxdd/hysteria
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./hysteria.json:/etc/hysteria.json
+  #   command: ["--config", "/etc/hysteria.json"]
+  
+  # web:
+  #   image: mzz2017/v2raya
+  #   restart: unless-stopped
+  #   ports:
+  #     - 127.0.0.1:2017:2017
+  #     - 20173:20173 # socks
+  #     - 20172:20172 # http
+  #   volumes:
+  #     - ./web_conf:/etc/v2raya

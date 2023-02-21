@@ -1,0 +1,73 @@
+{
+  "inbounds": [
+    {
+      "listen": "0.0.0.0",
+      "port": 2081,
+      "protocol": "http"
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 2080,
+      "protocol": "socks"
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "socks",
+      "tag": "proxy",
+      "settings": {
+        "servers": [
+          {
+            "address": "upstream",
+            "port": 1080
+          }
+        ]
+      }
+    },
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      // {
+      //   "type": "field",
+      //   "domain": ["geosite:category-ads-all"],
+      //   "outboundTag": "block"
+      // },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:geolocation-!cn",
+          "geosite:tiktok"
+        ],
+        "outboundTag": "proxy"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:cn",
+          "domain:tianze.me"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "ip": ["geoip:private", "geoip:cn"],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "ip": ["geoip:!cn"],
+        "outboundTag": "proxy"
+      }
+    ]
+  }
+}
+  

@@ -3,8 +3,6 @@ Use `./up.sh` instead of `docker compose up -d` to generate config.yaml with sen
 ## Transparent Proxy
 
 > ⚠️ UNDER CONSTRUCTION
-> - UDP forward
-> - DNS
 > - Persistence of iptables and ip rule, ip route
 
 ### WiFi Hotspot Sharing Proxy
@@ -42,6 +40,12 @@ nmcli con modify MyHotspot wifi-sec.key-mgmt wpa-psk
 nmcli con modify MyHotspot 802-11-wireless.band a # `a` is 5GHz, `bg` is 2.4GHz
 nmcli con modify MyHotspot wifi-sec.psk $YOUR_PASSWORD
 nmcli con up MyHotspot
+
+# If packets were not forwarded
+# https://wiki.archlinux.org/title/Internet_sharing#With_iptables
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+iptables -I DOCKER-USER 1 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+iptables -I DOCKER-USER 2 -i wlan0 -o eth0 -j ACCEPT
 ```
 
 #### Proxy
@@ -53,6 +57,7 @@ Use https://github.com/zfl9/ipt2socks to convert network layer traffic to socks5
 ```shell
 iptables -t mangle -N NAIVE
 iptables -t mangle -A NAIVE ! -d 10.42.0.0/24 -p tcp -j TPROXY --on-ip 127.0.0.1 --on-port 60080 --tproxy-mark 626
+iptables -t mangle -A NAIVE ! -d 10.42.0.0/24 -p udp -j TPROXY --on-ip 127.0.0.1 --on-port 60080 --tproxy-mark 626
 iptables -t mangle -A PREROUTING -i wlan0 -j NAIVE
 ```
 

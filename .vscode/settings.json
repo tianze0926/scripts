@@ -1,0 +1,8 @@
+{
+    "files.watcherExclude": {
+        "docker/nextcloud/config/**": true
+    },
+    "files.associations": {
+        "*.json": "jsonc"
+    }
+}
