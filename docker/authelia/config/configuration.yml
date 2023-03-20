@@ -604,6 +604,7 @@ access_control:
         - bte.tianze.me
         - file.tianze.me
         - aria.tianze.me
+        - frps.tianze.me
         - frpd.tianze.me
         - sync.tianze.me
         - clash.tianze.me
