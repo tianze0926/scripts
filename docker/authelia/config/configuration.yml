@@ -1150,7 +1150,7 @@ notifier:
   ##     (configure in tls section)
   smtp:
     ## The SMTP host to connect to.
-    host: smtp.exmail.qq.com
+    host: smtp.feishu.cn
 
     ## The port to connect to the SMTP host on.
     port: 465
