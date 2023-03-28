@@ -2,17 +2,16 @@ version: '3'
 
 services:
   jellyfin:
-    image: jellyfin/jellyfin
+    image: linuxserver/jellyfin
     container_name: jellyfin
-    user: 1000:1000
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
     volumes:
       - ./config:/config
-      - jellyfin_cache:/cache
       - /mnt/4t/media:/media:ro
     restart: unless-stopped
-
-volumes:
-  jellyfin_cache:
 
 networks:
   default:
