@@ -583,6 +583,7 @@ access_control:
     - domain:
         - bitwarden.tianze.me
         - swap.tianze.me
+        - pfile.tianze.me
         - sub.tianze.me
         - frp.tianze.me
         - webdav.tianze.me
