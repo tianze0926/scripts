@@ -1,3 +1,16 @@
+## Logging Driver
+
+`/etc/docker/daemon.json`:
+
+```json
+{
+  "log-driver": "local"
+}
+```
+
+https://docs.docker.com/config/containers/logging/local/
+
+
 ## Enabling IPv6
 
 Create IPv6 bridge:
