@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  app:
+    image: ghcr.io/tianze0926/poll:master
+    restart: unless-stopped
+    volumes:
+      - ./config.yml:/app/config.yml
+
+networks:
+  default:
+    name: apps
+    external: true
