@@ -3,7 +3,6 @@ WORKDIR /app
 RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest; \
     xcaddy build \
         --with github.com/caddy-dns/cloudflare \
-        --with github.com/abiosoft/caddy-yaml \
         --output caddy
 
 
