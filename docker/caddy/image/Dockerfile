@@ -21,4 +21,5 @@ COPY init.sh .
 
 RUN apt-get clean
 
+STOPSIGNAL SIGINT
 ENTRYPOINT ["/bin/sh", "/app/init.sh"]
