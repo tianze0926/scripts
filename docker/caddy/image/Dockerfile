@@ -1,7 +1,8 @@
 FROM golang:1.19-bullseye as builder
 WORKDIR /app
+ARG CADDY_VERSION=latest
 RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest; \
-    xcaddy build \
+    xcaddy build $CADDY_VERSION \
         --with github.com/caddy-dns/cloudflare \
         --output caddy
 
