@@ -26,7 +26,5 @@ RUN cd convert && pip install -r requirements.txt
 USER root
 COPY init.sh .
 
-RUN 
-
 STOPSIGNAL SIGINT
 ENTRYPOINT ["/bin/sh", "/app/init.sh"]
