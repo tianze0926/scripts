@@ -25,12 +25,12 @@ if __name__ == '__main__':
     generator = Generator(config)
     json_str = json.dumps(generator.caddy_config, indent=2)
 
-    def replace_placeholders(s: str):
+    def replace_placeholders(s: str) -> str:
         if args.input_sensitive_config is None:
-            return
+            return s
         p = Path(args.input_sensitive_config)
         if not p.is_file():
-            return
+            return s
         with open(p, 'r') as f:
             sensitive_config: SensitiveConfig = yaml.safe_load(f)
         check_type(sensitive_config, SensitiveConfig)
@@ -39,7 +39,8 @@ if __name__ == '__main__':
                 f'${{{match}}}',
                 sensitive_config[match]
             )
-    replace_placeholders(json_str)
+        return s
+    json_str = replace_placeholders(json_str)
 
     with open(args.output_caddy_config, 'w') as f:
         f.write(json_str)
