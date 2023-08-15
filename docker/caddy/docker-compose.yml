@@ -2,21 +2,18 @@ version: "3.9"
 
 services:
   app:
-    image: nerd.us.leous.eu.org:1111/tianze0926/caddy:main
+    build:
+      args:
+        PUID: 1000
+        PGID: 1000
     container_name: caddy
     restart: unless-stopped
-    stop_signal: SIGKILL
     ports:
       - 1122:1122
       - 1122:1122/udp
-    environment:
-      PUID: 1000
-      PGID: 1000
     volumes:
-      - ./caddy.yml:/app/caddy.yml:ro
-      - ./sensitive.yml:/app/sensitive.yml:ro
+      - ./caddy.json:/app/config.json:ro
       - ./data:/app/data/caddy
-      - ./browse.html:/app/browse.html:ro
       - /mnt/4t:/mnt/4t:ro
 
 networks:
