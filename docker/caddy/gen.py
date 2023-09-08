@@ -4,7 +4,7 @@ from sensitive import sensitive_config
 
 class Caddy:
   def __init__(s):
-    s.port = 1122
+    s.port = 1111
     s.domain = 'tianze.me'
     s.auth_name = 'auth'
     s.auth_dial = 'authelia:9091'
@@ -13,7 +13,7 @@ class Caddy:
       s.r('status', 'glances:61208'),
       s.r('media', 'jellyfin:8096'),
       s.r('bt', 'qbittorrent:8080'),
-      s.r('bte', 'qbittorrentee:80'),
+      s.r('bte', 'qbittorrentee:8080'),
       s.r('bitwarden', 'bitwarden:80'),
       s.r('file', 'filebrowser:80'),
       s.r('swap', 'filebrowser-swap:80'),
@@ -34,6 +34,13 @@ class Caddy:
           },
         ],
       }]),
+      s.r('frp', 'frps:7002'),
+      s.r('frps', 'frps:7003'),
+      s.r('frpd', 'frps:7001'),
+      s.r('sync', 'sync:8384'),
+      s.r('cloud', 'nextcloud:80'),
+      s.r('ntfy', 'ntfy:80', auth=False),
+      s.r('mail', 'roundcube:80', auth=False),
       s.h('fs', [{
         'handler': 'subroute',
         'routes': [
@@ -81,6 +88,7 @@ class Caddy:
     return {
       'handler': 'reverse_proxy',
       'upstreams': [{'dial': dial}],
+      'headers': {'response': {'set': {'Strict-Transport-Security': ['max-age=31536000;']}}},
     }
   def auth_handler(s):
     return {

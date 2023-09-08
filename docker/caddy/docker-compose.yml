@@ -9,8 +9,8 @@ services:
     container_name: caddy
     restart: unless-stopped
     ports:
-      - 1122:1122
-      - 1122:1122/udp
+      - 1111:1111
+      - 1111:1111/udp
     volumes:
       - ./caddy.json:/app/config.json:ro
       - ./data:/app/data/caddy

@@ -5,7 +5,7 @@ ARG PGID
 
 USER root
 RUN usermod --non-unique --uid $PUID abc &&\
-    usermod --gid $PGID abc &&\
+    groupmod --non-unique --gid $PGID abc &&\
     chown --quiet -R $PUID:$PGID /app
 
 USER abc
