@@ -20,7 +20,6 @@ class Caddy:
       s.r('bitwarden', 'bitwarden:80', False),
       s.r('file', 'filebrowser:80'),
       s.r('swap', 'filebrowser-swap:80', False),
-      s.r('pfile', 'filebrowser-public:80', False),
       s.r('sub', 'qzyq-water-sub:8080'),
       s.h('aria', [{
         'handler': 'subroute',
