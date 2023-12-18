@@ -32,7 +32,7 @@ services:
       AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE: /run/secrets/IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY
     volumes:
       - ./config:/config
-    user: 1000:1000
+    user: 1000:100
 
   redis:
     image: redis

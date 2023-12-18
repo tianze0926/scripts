@@ -6,7 +6,7 @@ services:
     container_name: aria
     environment:
       - PUID=1000
-      - PGID=1000
+      - PGID=100
       - UMASK_SET=022
       - RPC_SECRET=
       - RPC_PORT=6800

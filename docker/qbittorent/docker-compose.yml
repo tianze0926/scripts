@@ -6,7 +6,7 @@ services:
     container_name: qbittorrent
     environment:
       - PUID=1000
-      - PGID=1000
+      - PGID=100
       - TZ=Asia/Shanghai
       - WEBUI_PORT=8080
     volumes:
@@ -23,7 +23,7 @@ services:
     container_name: qbittorrentee
     environment:
       - PUID=1000
-      - PGID=1000
+      - PGID=100
       - TZ=Asia/Shanghai
     volumes:
       - ./config-ee:/config

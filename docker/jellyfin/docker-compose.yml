@@ -6,7 +6,7 @@ services:
     container_name: jellyfin
     environment:
       PUID: 1000
-      PGID: 1000
+      PGID: 100
       TZ: Asia/Shanghai
     volumes:
       - ./config:/config

@@ -5,7 +5,7 @@ services:
     build:
       args:
         PUID: 1000
-        PGID: 1000
+        PGID: 100
     container_name: caddy
     restart: unless-stopped
     ports:
