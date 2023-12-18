@@ -568,51 +568,9 @@ password_policy:
 access_control:
   ## Default policy can either be 'bypass', 'one_factor', 'two_factor' or 'deny'. It is the policy applied to any
   ## resource if there is no policy to be applied to the user.
-  default_policy: deny
-
-  networks:
-    - name: internal
-      networks:
-        - 10.0.0.0/8
-        - 172.16.0.0/12
-        - 192.168.0.0/16
-    # - name: VPN
-    #   networks: 10.9.0.0/16
+  default_policy: two_factor
 
   rules:
-    - domain:
-        - bitwarden.tianze.me
-        - swap.tianze.me
-        - pfile.tianze.me
-        - sub.tianze.me
-        - frp.tianze.me
-        - webdav.tianze.me
-        - media.tianze.me
-        - git.tianze.me
-        - grocy.tianze.me
-        - cloud.tianze.me
-      policy: bypass
-    
-    - domain:
-        - bt.tianze.me
-      networks:
-        - internal
-      policy: bypass
-
-    - domain:
-        - status.tianze.me
-        - bt.tianze.me
-        - bte.tianze.me
-        - file.tianze.me
-        - aria.tianze.me
-        - frps.tianze.me
-        - frpd.tianze.me
-        - sync.tianze.me
-        - clash.tianze.me
-        - rss.tianze.me
-        - code.tianze.me
-      subject: 'user:leo'
-      policy: two_factor
     
     ## Rules applied to everyone
     # - domain: 'public.example.com'
