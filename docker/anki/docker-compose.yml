@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  app:
+    image: ghcr.io/tianze0926/test-anki
+    container_name: anki
+    restart: unless-stopped
+    volumes:
+      - ./users.txt:/app/users.txt:ro
+      - data:/app/data
+
+volumes:
+  data:
+
+networks:
+  default:
+    name: apps
+    external: true
