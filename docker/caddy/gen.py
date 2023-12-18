@@ -38,9 +38,8 @@ class Caddy:
       }]),
       s.r('frp', 'frps:80'),
       s.r('sync', 'sync:8384'),
-      s.r('ntfy', 'ntfy:80', auth=False),
-      s.r('mail', 'roundcube:80', auth=False),
       s.r('cloud', 'owncloud:9200', False),
+      s.r('ntfy', 'ntfy:80', False),
       s.h('fs', [{
         'handler': 'subroute',
         'routes': [
@@ -61,6 +60,7 @@ class Caddy:
           for token, root in sensitive_config.file_server_access
         ],
       }]),
+      s.r('anki', 'anki:80', False),
       {
         'handle': [{
           'abort': True,
