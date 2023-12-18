@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  app:
+    image: owncloud/ocis
+    container_name: owncloud
+    restart: unless-stopped
+    user: 1000:100
+    entrypoint: [/bin/sh]
+    command: [-c, ocis init || true; ocis server]
+    environment:
+      OCIS_URL: https://cloud.tianze.me:1111
+      OCIS_LOG_LEVEL: info
+      OCIS_LOG_COLOR: true
+      OCIS_LOG_PRETTY: true
+      PROXY_TLS: false
+      OCIS_INSECURE: false
+      # OpenID Connect
+      OCIS_OIDC_ISSUER: https://auth.tianze.me:1111
+      PROXY_OIDC_REWRITE_WELLKNOWN: true
+      WEB_OIDC_CLIENT_ID: owncloud-web
+      PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
+    volumes:
+      - ./config:/etc/ocis
+      - ./data:/var/lib/ocis
+
+networks:
+  default:
+    name: apps
+    external: true

@@ -1385,14 +1385,14 @@ identity_providers:
     # enforce_pkce: public_clients_only
 
     ## Cross-Origin Resource Sharing (CORS) settings.
-    # cors:
+    cors:
       ## List of endpoints in addition to the metadata endpoints to permit cross-origin requests on.
-      # endpoints:
-        #  - authorization
-        #  - token
-        #  - revocation
-        #  - introspection
-        #  - userinfo
+      endpoints:
+        - authorization
+        - token
+        - revocation
+        - introspection
+        - userinfo
 
       ## List of allowed origins.
       ## Any origin with https is permitted unless this option is configured or the
@@ -1402,7 +1402,7 @@ identity_providers:
 
       ## Automatically adds the origin portion of all redirect URI's on all clients to the list of allowed_origins,
       ## provided they have the scheme http or https and do not have the hostname of localhost.
-      # allowed_origins_from_client_redirect_uris: false
+      allowed_origins_from_client_redirect_uris: true
 
     ## Clients is a list of known clients and their configuration.
     # clients:
@@ -1472,9 +1472,12 @@ identity_providers:
         secret: gitea
         redirect_uris:
           - https://git.tianze.me:1111/user/oauth2/authelia/callback
-      
-      - id: nextcloud
-        secret: $pbkdf2-sha512$310000$E0XdDY4t2qPoDhIQ.SMz0g$4FrRSuurJwRoSlFB.2hHU8UP4DkWMinIWJWfvVdu1/6iNqjxeVvtsZy7nfvN4y4ia1.PNzByYrs53zwkvZUK/Q
+
+      - id: owncloud-web
+        description: OwnCloud Web
+        public: true
         redirect_uris:
-          - https://cloud.tianze.me:1111/apps/oidc_login/oidc
+          - https://cloud.tianze.me:1111
+          - https://cloud.tianze.me:1111/oidc-callback.html
+          - https://cloud.tianze.me:1111/oidc-silent-redirect.html
 ...
