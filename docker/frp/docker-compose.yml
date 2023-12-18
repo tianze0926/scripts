@@ -6,15 +6,11 @@ services:
     container_name: frps
     restart: always
     ports:
-      # bind port
       - 7000:7000
-      # dashboard port
-      # - 127.0.0.1:37001:7001
-      # tcp remote ports
-      # - 127.0.0.1:37002:7002
+      - 127.0.0.1:7002:7002
     volumes:
-      - ./frps.ini:/etc/frp/frps.ini
-      - ../swag/config/etc/letsencrypt:/cert:ro
+      - ./frps.toml:/etc/frp/frps.toml:ro
+      - ../caddy/data/certificates/acme.zerossl.com-v2-dv90/wildcard_.tianze.me:/certs:ro
 
 networks:
   default:

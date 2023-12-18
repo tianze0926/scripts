@@ -1,0 +1,12 @@
+serverAddr = "frp.tianze.me"
+bindPort = 7000
+
+auth.method = "token"
+auth.token = "00000000000000000"
+
+[[proxies]]
+name = "socks5"
+type = "tcp"
+remotePort = 7002
+[proxies.plugin]
+type = "socks5"

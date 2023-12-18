@@ -1,0 +1,10 @@
+bindPort = 7000
+webServer.addr = "0.0.0.0"
+webServer.port = 80
+
+auth.method = "token"
+auth.token = "00000000000000000"
+
+transport.tls.force = true
+transport.tls.certFile = "/certs/wildcard_.tianze.me.crt"
+transport.tls.keyFile = "/certs/wildcard_.tianze.me.key"
