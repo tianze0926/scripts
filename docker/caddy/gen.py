@@ -1,6 +1,9 @@
 import json
 
-from sensitive import sensitive_config
+from sensitive import config
+class dotdict(dict): # https://stackoverflow.com/a/23689767
+    __getattr__ = dict.get
+sensitive_config = dotdict(config)
 
 class Caddy:
   def __init__(s):
@@ -9,15 +12,15 @@ class Caddy:
     s.auth_name = 'auth'
     s.auth_dial = 'authelia:9091'
     s.routes = [
-      s.r(s.auth_name, s.auth_dial, auth=False),
+      s.r(s.auth_name, s.auth_dial, False),
       s.r('status', 'glances:61208'),
-      s.r('media', 'jellyfin:8096'),
+      s.r('media', 'jellyfin:8096', False),
       s.r('bt', 'qbittorrent:8080'),
       s.r('bte', 'qbittorrentee:8080'),
-      s.r('bitwarden', 'bitwarden:80'),
+      s.r('bitwarden', 'bitwarden:80', False),
       s.r('file', 'filebrowser:80'),
-      s.r('swap', 'filebrowser-swap:80'),
-      s.r('pfile', 'filebrowser-public:80'),
+      s.r('swap', 'filebrowser-swap:80', False),
+      s.r('pfile', 'filebrowser-public:80', False),
       s.r('sub', 'qzyq-water-sub:8080'),
       s.h('aria', [{
         'handler': 'subroute',
@@ -58,10 +61,7 @@ class Caddy:
               },
             ],
           }
-          for token, root in [
-            (sensitive_config.file_server_token, sensitive_config.file_server_root),
-            (sensitive_config.file_server_token_1, sensitive_config.file_server_root_1),
-          ]
+          for token, root in sensitive_config.file_server_access
         ],
       }]),
       {
@@ -88,7 +88,13 @@ class Caddy:
     return {
       'handler': 'reverse_proxy',
       'upstreams': [{'dial': dial}],
-      'headers': {'response': {'set': {'Strict-Transport-Security': ['max-age=31536000;']}}},
+      'headers': {'response': {'set': {
+        'Strict-Transport-Security': ['max-age=31536000;'],
+        'X-Frame-Options': ['SAMEORIGIN'],
+        'Content-Security-Policy': ["frame-ancestors 'self'"],
+        'X-Content-Type-Options': ['nosniff'],
+        'X-XSS-Protection': ['1; mode=block'],
+      }}},
     }
   def auth_handler(s):
     return {
@@ -117,7 +123,7 @@ class Caddy:
 
 s = Caddy()
 
-config = {
+caddy_config = {
   'apps': {
     'http': {
       'servers': {
@@ -148,7 +154,7 @@ config = {
                         'dns': {
                             'provider': {
                                 'name': 'cloudflare',
-                                'api_token': sensitive_config.tls_cloudflare_token,
+                                'api_token': sensitive_config.cloudflare_token,
                             }
                         }
                     },
@@ -156,6 +162,18 @@ config = {
                 }]
             }]
         }
+    },
+    'dynamic_dns': {
+      'domains': {s.domain: ['*']},
+      'dns_provider': {
+        'name': 'cloudflare',
+        'api_token': sensitive_config.cloudflare_token,
+      },
+      'versions': {
+        'ipv4': False,
+        'ipv6': True,
+      },
+      'check_interval': '5m',
     },
   },
   'logging': {
@@ -176,6 +194,6 @@ config = {
 
 if __name__ == "__main__":
   with open('caddy.json', 'w') as f:
-    json.dump(config, f, indent=2)
+    json.dump(caddy_config, f, indent=2)
 
 # vim: ts=2:sw=2

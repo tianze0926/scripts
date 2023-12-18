@@ -1,4 +1,4 @@
-FROM nerd.us.leous.eu.org:1111/tianze0926/caddy
+FROM ghcr.io/tianze0926/caddy
 
 ARG PUID
 ARG PGID
