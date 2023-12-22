@@ -60,6 +60,8 @@ class Caddy:
           for token, root in sensitive_config.file_server_access
         ],
       }]),
+      s.r('matrix', 'synapse:8008', False),
+      s.r('element', 'element:80', False),
       s.r('anki', 'anki:80', False),
       {
         'handle': [{

@@ -1,0 +1,55 @@
+# This compose file is compatible with Compose itself, it might need some
+# adjustments to run properly with stack.
+
+version: '3'
+
+services:
+
+  server:
+    image: matrixdotorg/synapse
+    restart: unless-stopped
+    container_name: synapse
+    environment:
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+    user: 1000:100
+    volumes:
+      # You may either store all the files in a local folder
+      - ./data:/data
+      # .. or you may split this between different storage points
+      # - ./files:/data
+      # - /path/to/ssd:/data/uploads
+      # - /path/to/large_hdd:/data/media
+    depends_on:
+      - db
+    networks:
+      - default
+      - db
+
+  db:
+    image: postgres:alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      # ensure the database gets created correctly
+      # https://matrix-org.github.io/synapse/latest/postgres.html#set-up-database
+      POSTGRES_INITDB_ARGS: --encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - db
+
+  client:
+    image: vectorim/element-web
+    container_name: element
+    restart: unless-stopped
+    volumes:
+      - ./element.json:/app/config.json:ro
+
+volumes:
+  db:
+
+networks:
+  default:
+    name: apps
+    external: true
+  db:
