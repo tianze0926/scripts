@@ -38,7 +38,7 @@ class Caddy:
       }]),
       s.r('frp', 'frps:80'),
       s.r('sync', 'sync:8384'),
-      s.r('cloud', 'owncloud:9200', False),
+      s.r('cloud', 'owncloud:8080', False),
       s.r('ntfy', 'ntfy:80', False),
       s.h('fs', [{
         'handler': 'subroute',

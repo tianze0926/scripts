@@ -2,29 +2,80 @@ version: '3'
 
 services:
   app:
-    image: owncloud/ocis
+    build:
+      args:
+        PUID: 1000
+        PGID: 100
     container_name: owncloud
     restart: unless-stopped
-    user: 1000:100
-    entrypoint: [/bin/sh]
-    command: [-c, ocis init || true; ocis server]
     environment:
-      OCIS_URL: https://cloud.tianze.me:1111
-      OCIS_LOG_LEVEL: info
-      OCIS_LOG_COLOR: true
-      OCIS_LOG_PRETTY: true
-      PROXY_TLS: false
-      OCIS_INSECURE: false
-      # OpenID Connect
-      OCIS_OIDC_ISSUER: https://auth.tianze.me:1111
-      PROXY_OIDC_REWRITE_WELLKNOWN: true
-      WEB_OIDC_CLIENT_ID: owncloud-web
-      PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: none
+      # https://github.com/owncloud-docker/base/blob/master/v20.04/overlay/etc/templates/config.php
+      OWNCLOUD_DOMAIN: https://cloud.tianze.me:1111
+      OWNCLOUD_TRUSTED_DOMAINS: cloud.tianze.me
+      OWNCLOUD_DB_TYPE: mysql
+      OWNCLOUD_DB_NAME: owncloud
+      OWNCLOUD_DB_USERNAME: owncloud
+      OWNCLOUD_DB_PASSWORD: owncloud
+      OWNCLOUD_DB_HOST: mariadb
+      OWNCLOUD_ADMIN_USERNAME: admin
+      OWNCLOUD_ADMIN_PASSWORD: admin
+      OWNCLOUD_MYSQL_UTF8MB4: true
+      OWNCLOUD_REDIS_ENABLED: true
+      OWNCLOUD_REDIS_HOST: redis
+      OWNCLOUD_FILES_EXTERNAL_ALLOW_NEW_LOCAL: true
+      OWNCLOUD_CRON_LOG: true
+    healthcheck:
+      test: ["CMD", "/usr/bin/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     volumes:
-      - ./config:/etc/ocis
-      - ./data:/var/lib/ocis
+      - ./data:/mnt/data
+      - /:/mnt/host
+    networks:
+      - default
+      - db
+
+  mariadb:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: owncloud
+      MYSQL_USER: owncloud
+      MYSQL_PASSWORD: owncloud
+      MYSQL_DATABASE: owncloud
+      MARIADB_AUTO_UPGRADE: 1
+    command: ["--max-allowed-packet=128M", "--innodb-log-file-size=64M"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=owncloud"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - db
+
+  redis:
+    image: redis:6
+    restart: unless-stopped
+    command: ["--databases", "1"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - redis:/data
+    networks:
+      - db
+
+volumes:
+  mysql:
+  redis:
 
 networks:
   default:
     name: apps
     external: true
+  db:
