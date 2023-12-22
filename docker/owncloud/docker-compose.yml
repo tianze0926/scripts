@@ -70,9 +70,19 @@ services:
     networks:
       - db
 
+  onlyoffice:
+    image: onlyoffice/documentserver
+    container_name: onlyoffice
+    restart: unless-stopped
+    environment:
+      JWT_ENABLED: false
+    volumes:
+      - doc-data:/var/www/onlyoffice/Data
+
 volumes:
   mysql:
   redis:
+  doc-data:
 
 networks:
   default:

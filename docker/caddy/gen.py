@@ -39,6 +39,7 @@ class Caddy:
       s.r('frp', 'frps:80'),
       s.r('sync', 'sync:8384'),
       s.r('cloud', 'owncloud:8080', False),
+      s.r('office', 'onlyoffice:80', False),
       s.r('ntfy', 'ntfy:80', False),
       s.h('fs', [{
         'handler': 'subroute',
@@ -90,7 +91,7 @@ class Caddy:
       'headers': {'response': {'set': {
         'Strict-Transport-Security': ['max-age=31536000;'],
         'X-Frame-Options': ['SAMEORIGIN'],
-        'Content-Security-Policy': ["frame-ancestors 'self'"],
+        'Content-Security-Policy': [f"frame-ancestors 'self' https://*.{s.domain}:{s.port}"],
         'X-Content-Type-Options': ['nosniff'],
         'X-XSS-Protection': ['1; mode=block'],
       }}},
