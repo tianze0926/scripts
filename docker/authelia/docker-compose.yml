@@ -33,12 +33,17 @@ services:
     volumes:
       - ./config:/config
     user: 1000:100
+    networks:
+      - default
+      - db
 
   redis:
     image: redis
     restart: unless-stopped
     volumes:
       - authelia-redis:/data
+    networks:
+      - db
 
 volumes:
   authelia-redis:
@@ -47,3 +52,4 @@ networks:
   default:
     name: apps
     external: true
+  db:
