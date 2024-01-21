@@ -682,7 +682,7 @@ session:
 
   ## The time before the cookie expires and the session is destroyed if remember me IS selected.
   ## Value of -1 disables remember me.
-  remember_me_duration: 1M
+  remember_me_duration: 1y # 1M
 
   ##
   ## Redis Provider
