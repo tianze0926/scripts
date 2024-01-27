@@ -9,10 +9,16 @@ services:
     image: matrixdotorg/synapse
     restart: unless-stopped
     container_name: synapse
+    ports:
+      - 8448:8448
     environment:
       SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+      http_proxy: http://xray:2081
+      https_proxy: http://xray:2081
+      no_proxy: localhost
     user: 1000:100
     volumes:
+      - ../caddy/data/certificates:/cert:ro
       # You may either store all the files in a local folder
       - ./data:/data
       # .. or you may split this between different storage points
